@@ -13,12 +13,17 @@ def print_students(students):
             print "\t {} -- {} ".format(nume, facultate)
 
 
-def main(filename):
+def group_students(csvfile):
     students = collections.defaultdict(list)
+    reader = csv.DictReader(csvfile, fieldnames=FIELDNAMES)
+    for row in reader:
+        students[row['AN']].append(row)
+    return students
+
+
+def main(filename):
     with open(filename) as csvfile:
-        reader = csv.DictReader(csvfile, fieldnames=FIELDNAMES)
-        for row in reader:
-            students[row['AN']].append(row)
+        students = group_students(csvfile)
 
     print_students(students)
 
